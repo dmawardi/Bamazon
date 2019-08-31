@@ -31,7 +31,19 @@ function readProducts() {
     });
 }
 
-// Reads and prints products
+// Takes item_id of item and data and fetches 
+function fetchCurrentStockUsingID(item_id, data) {
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].item_id == item_id){
+            let currentStock = data[i].stock_quantity;
+            return currentStock
+        }
+    
+    }
+
+}
+
+// Reads and prints products with a stock level below 5
 function fetchLowStockProducts() {
     console.log("Fetching all products below 5 stock...\n");
     connection.query("SELECT * FROM BamazonDB.products WHERE stock_quantity < 5", function (err, res) {
@@ -43,16 +55,41 @@ function fetchLowStockProducts() {
     });
 }
 
+// Prompt user for additional questions given they select to add inventory
+function promptForInventoryAdd() {
+    readProducts();
+    inquirer
+    .prompt([{
+        name: 'item_id',
+        type: 'input',
+        message: "What's the item_id of the product you wish to add?"
+        
+    },
+    {
+        name: 'quantityToAdd',
+        type: 'input',
+        message: "What's the quantity you wish to add?"
+        
+    }])
+    .then(answers => {
+        addToInventory(answers.item_id, answers.quantityToAdd);
+
+    });
+}
+
+// Adds to current inventory level if addQuantity is greater than 0
 function addToInventory(item_id, addQuantity) {
+    
+    if (addQuantity > 0) {
+        // Add the add quantity to current quantity to determine update value
+        let newQuantity = fetchCurrentStockUsingID(item_id, data);
+        newQuantity = newQuantity + parseInt(addQuantity);
 
-    let currentStock = fetchCurrentStockUsingID(item_id, data);
-    currentStock = currentStock + addQuantity;
-
-    if (currentStock > 0) {
+        // Update stock value of item
         let query = 'UPDATE BamazonDB.products SET ? WHERE item_id = ?';
         connection.query(query,
             [{
-                    stock_quantity: currentStock
+                    stock_quantity: newQuantity
                 },
                 item_id
             ],
@@ -60,35 +97,48 @@ function addToInventory(item_id, addQuantity) {
             function (err, res) {
                 if (err) throw err;
     
-                // Complete purchase and 
+                // Alert user inventory has been added to
                 console.log('Inventory Added!\n');
+                adminMenu();
             });
 
     } else {
-        console.log('Insufficient Quantity for Purchase!\n');
+        console.log('Please input a valid quantity!\n');
     }
 
 }
 
-inquirer
-    .prompt([{
-        name: 'command',
-        type: 'list',
-        choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product']
-    }])
-    .then(answers => {
-        console.log(answers);
-        switch (answers.command) {
-            case 'View Products for Sale':
-                readProducts();
-                break;
-            case 'View Low Inventory':
-                fetchLowStockProducts();
-                break;
-            case 'Add to Inventory':
-                break;
-            case 'Add New Product':
-                break;
-        }
+function adminMenu() {
+    inquirer
+        .prompt([{
+            name: 'command',
+            type: 'list',
+            message: 'Manager Admin Controls\nPlease Select an Option',
+            choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product', 'Exit']
+        }])
+        .then(answers => {
+            console.log(answers);
+            switch (answers.command) {
+                case 'View Products for Sale':
+                    readProducts();
+                    break;
+                case 'View Low Inventory':
+                    fetchLowStockProducts();
+                    break;
+                case 'Add to Inventory':
+                    promptForInventoryAdd();
+                    break;
+                case 'Add New Product':
+                    break;
+                case 'Exit':
+                    connection.end();
+                    break;
+            }
+    
+        });
 
-    });
+}
+
+// Arguments begin here
+// 
+adminMenu();
