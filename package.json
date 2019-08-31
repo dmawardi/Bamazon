@@ -1,0 +1,27 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "Web Application Development Bootcamp Week 12: SQL assignment - Bamazon",
+  "main": "customerSetup.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmawardi/Bamazon.git"
+  },
+  "keywords": [
+    "clone",
+    "amazon"
+  ],
+  "author": "Dannar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dmawardi/Bamazon/issues"
+  },
+  "homepage": "https://github.com/dmawardi/Bamazon#readme",
+  "dependencies": {
+    "inquirer": "^7.0.0",
+    "mysql": "^2.17.1"
+  }
+}
