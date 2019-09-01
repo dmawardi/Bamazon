@@ -44,11 +44,12 @@ function promptForDepartmentAdd() {
 
 function fetchSalesByDept() {
     console.log("Fetching product sales by Department...\n");
-    let query = ['SELECT b.department_id, b.department_name, a.product_sales,b.over_head_costs',
+    let query = ['SELECT b.department_id, b.department_name, a.product_sales,b.over_head_costs,',
+    '(IFNULL(a.product_sales,0)-b.over_head_costs) AS Total_Profit',
     'FROM BamazonDB.products as a RIGHT OUTER JOIN  BamazonDB.departments as b',
     'on a.department_name=b.department_name',
     'GROUP BY b.department_id, a.department_name, a.product_sales, b.over_head_costs'
-    ].join(' ')
+    ].join(' ');
     connection.query(query, function (err, res) {
         if (err) throw err;
 
