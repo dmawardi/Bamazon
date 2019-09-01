@@ -20,7 +20,7 @@ var connection = mysql.createConnection({
 });
 
 // Reads and prints products
-function readProducts(recurse = true) {
+function readProducts(recursive = true) {
     console.log("Fetching all products...\n");
     connection.query("SELECT * FROM BamazonDB.products", function (err, res) {
         if (err) throw err;
@@ -28,7 +28,7 @@ function readProducts(recurse = true) {
         // Log all results of the SELECT statement
         console.table(res);
         data = res;
-        if (recurse) {
+        if (recursive) {
             adminMenu();
         }
     });
@@ -182,7 +182,6 @@ function adminMenu() {
             choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product', 'Exit']
         }])
         .then(answers => {
-            console.log(answers);
             switch (answers.command) {
                 case 'View Products for Sale':
                     readProducts();
