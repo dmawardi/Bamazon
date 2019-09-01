@@ -50,14 +50,20 @@ function takeCustomerOrder() {
 // Takes purchase quantity and item id and fulfills order if quantity available
 function makePurchase(item_id, purchaseQuantity) {
 
-    let currentStock = fetchCurrentStockUsingID(item_id, data);
+    let [currentStock, currentProductSales, currentPrice] = fetchCurrentStockUsingID(item_id, data);
+
+    // Reduce the current stock by the purchase quantity: update value
     currentStock = currentStock - purchaseQuantity;
 
+    // TODO multiply new sales value to update
+    currentProductSales = currentProductSales + (purchaseQuantity*currentPrice);
+    // Condition to determine if purchase can go through
     if (currentStock > 0) {
         let query = 'UPDATE BamazonDB.products SET ? WHERE item_id = ?';
         connection.query(query,
             [{
-                    stock_quantity: currentStock
+                    stock_quantity: currentStock,
+                    product_sales: currentProductSales
                 },
                 item_id
             ],
@@ -80,7 +86,9 @@ function fetchCurrentStockUsingID(item_id, data) {
     for (let i = 0; i < data.length; i++) {
         if (data[i].item_id == item_id){
             let currentStock = data[i].stock_quantity;
-            return currentStock
+            let currentProductSales = data[i].product_sales;
+            let currentPrice = data[i].price;
+            return [currentStock, currentProductSales, currentPrice]
         }
     
     }
