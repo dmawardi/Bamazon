@@ -105,7 +105,7 @@ function supervisorMenu() {
         .prompt([{
             name: 'command',
             type: 'list',
-            message: 'Manager Admin Controls\nPlease Select an Option',
+            message: 'Supervisor Admin Controls\nPlease Select an Option',
             choices: ['View Product Sales by Department', 'Create New Department', 'Exit']
         }])
         .then(answers => {
