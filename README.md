@@ -10,11 +10,13 @@ To build a database accessible by three separate files/interfaces: Supervisor, M
 * This will trigger in a reduction of the stock quantity in the database
 
 #### Manager View View:
+![alt text](https://media.giphy.com/media/IbCpqTAXyS5E9d8G98/giphy.gif)
 * View all products or filter by those with low inventory
 * Able to add to inventory
 * Able to add new item
 
 #### Supervisor View:
+![alt text](https://media.giphy.com/media/YSBF5U6a8TViNgXQpA/giphy.gif)
 * View financials (product sales, overhead costs and total profit) by department
 * Able to add new department
 
