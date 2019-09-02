@@ -4,6 +4,24 @@ Web Application Development Bootcamp Week 12: SQL assignment - Bamazon
 ### Goal: 
 To build a database accessible by three separate files/interfaces: Supervisor, Manager, and Customer.
 
+## Installation
+To install, download the files and use npm to install the required packages.
+
+```
+npm install
+```
+
+Then run the individual files using node
+```
+node customerView.js
+```
+```
+node bamazonManager.js
+```
+```
+node bamazonSupervisor.js
+```
+
 #### Customer View:
 ![alt text](https://media.giphy.com/media/LrLanEM5qwGECFM1Oc/giphy.gif)
 * Make purchases by selecting an item id and quantity
@@ -21,9 +39,9 @@ To build a database accessible by three separate files/interfaces: Supervisor, M
 * Able to add new department
 
 ### Prerequisites
-NPM
-*Mysql
-*inquirer
+NPM packages
+* Mysql
+* inquirer
 
 ## Built With
 
