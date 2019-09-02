@@ -1,6 +1,7 @@
 // Import packages
 var inquirer = require('inquirer');
 var mysql = require('mysql');
+var pass = require('./pw');
 
 // Build connection to sql database
 var connection = mysql.createConnection({
@@ -13,7 +14,7 @@ var connection = mysql.createConnection({
     user: "root",
 
     // Your password
-    password: 'ricochet505',
+    password: pass,
     database: "BamazonDB"
 });
 // Initialize data variable for future assignment

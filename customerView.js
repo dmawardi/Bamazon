@@ -1,6 +1,7 @@
 // Import packages
 var inquirer = require('inquirer');
 var mysql = require('mysql');
+var pass = require('./pw');
 
 // Build connection to sql database
 var connection = mysql.createConnection({
@@ -13,16 +14,17 @@ var connection = mysql.createConnection({
     user: "root",
 
     // Your password
-    password: 'ricochet505',
+    password: pass,
     database: "BamazonDB"
 });
+// Initialize data for later assignment
 var data;
 
 // Function List
 // 
-
 //   Takes customer questions
 function takeCustomerOrder() {
+    // Prompt customer with two questions to complete their order
     inquirer
         .prompt([{
                 name: 'item_id',
@@ -38,10 +40,9 @@ function takeCustomerOrder() {
             }
         ])
         .then(answers => {
-            // console.log(answers);
-            // console.log(data);
-            console.log(fetchCurrentStockUsingID(answers.item_id, data));
+            // Make purchase using user input
             makePurchase(answers.item_id, answers.quantity);
+            // Read and print all products
             readProducts();
 
         });
@@ -50,44 +51,54 @@ function takeCustomerOrder() {
 // Takes purchase quantity and item id and fulfills order if quantity available
 function makePurchase(item_id, purchaseQuantity) {
 
-    let [currentStock, currentProductSales, currentPrice] = fetchCurrentStockUsingID(item_id, data);
+    // Fetch needed details using the item id
+    let [currentStock, currentProductSales, currentPrice] = fetchDetailsUsingID(item_id, data);
 
     // Reduce the current stock by the purchase quantity: update value
     currentStock = currentStock - purchaseQuantity;
 
-    // TODO multiply new sales value to update
+    // Multiply new sales value and add to current total
     currentProductSales = currentProductSales + (purchaseQuantity*currentPrice);
-    // Condition to determine if purchase can go through
+    // if the current stock allows for this purchase to proceed
     if (currentStock > 0) {
+        // Build query to edit specific item id's details
         let query = 'UPDATE BamazonDB.products SET ? WHERE item_id = ?';
         connection.query(query,
             [{
+                // Update stock quantity with the updated stock value
                     stock_quantity: currentStock,
+                    // Update product sales with sum including current sale
                     product_sales: currentProductSales
                 },
                 item_id
             ],
     
+            // Callback function
             function (err, res) {
                 if (err) throw err;
     
-                // Complete purchase and 
+                // Log status complete to user
                 console.log('Purchase Complete!\n');
             });
 
     } else {
+        // Inform user purchase failed
         console.log('Insufficient Quantity for Purchase!\n');
     }
 
 }
 
 // Takes item_id of item and data and fetches 
-function fetchCurrentStockUsingID(item_id, data) {
+function fetchDetailsUsingID(item_id, data) {
+    // Iterate through data
     for (let i = 0; i < data.length; i++) {
+        // if a matching item id is found
         if (data[i].item_id == item_id){
+            // assign required details to variables for return
             let currentStock = data[i].stock_quantity;
             let currentProductSales = data[i].product_sales;
             let currentPrice = data[i].price;
+
             return [currentStock, currentProductSales, currentPrice]
         }
     
