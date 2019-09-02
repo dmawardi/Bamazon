@@ -1,2 +1,43 @@
 # Bamazon
 Web Application Development Bootcamp Week 12: SQL assignment - Bamazon
+
+### Goal: 
+To build a database accessible by three separate files/interfaces: Supervisor, Manager, and Customer.
+
+#### Customer View:
+![alt text](https://media.giphy.com/media/LrLanEM5qwGECFM1Oc/giphy.gif)
+* Make purchases by selecting an item id and quantity
+* This will trigger in a reduction of the stock quantity in the database
+
+#### Manager View View:
+* View all products or filter by those with low inventory
+* Able to add to inventory
+* Able to add new item
+
+#### Supervisor View:
+* View financials (product sales, overhead costs and total profit) by department
+* Able to add new department
+
+### Prerequisites
+NPM
+*Mysql
+*inquirer
+
+## Built With
+
+* Node JS
+* SQL
+
+## Authors
+
+* **Dannar Mawardi** - *Initial work* - [GitHub IO](https://dmawardi.github.io)
+
+See also the list of [contributors](https://github.com/dmawardi/Bamazon/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+## Acknowledgments
+
+* Monash/Trilogy Web Application Bootcamp Coursework
